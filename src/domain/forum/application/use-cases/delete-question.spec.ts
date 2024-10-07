@@ -5,13 +5,13 @@ import { InMemoryQuestionRepository } from 'test/repositories/in-memory-question
 let inMemoryRepository: InMemoryQuestionRepository
 let sut: CreateQuestionUseCase
 
-describe('Create Question', ()=>{
+describe('Delete a question', ()=>{
     beforeEach(()=>{
         inMemoryRepository = new InMemoryQuestionRepository()
         sut = new CreateQuestionUseCase(inMemoryRepository)
     })
 
-    it(' should be able to create a question', async ()=>{
+    it(' should be able to delete a question', async ()=>{
         
         const { question } = await sut.execute({
             authorId:'1',
