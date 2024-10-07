@@ -2,9 +2,12 @@
   "name": "forum",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "lint": "eslint src --exct .ts",
+    "lint:fix": "eslint src --exct .ts --fix"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +19,8 @@
     "typescript": "^5.6.2"
   },
   "devDependencies": {
+    "@rocketseat/eslint-config": "^2.2.2",
+    "eslint": "^8.57.1",
     "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^2.1.2"
   }

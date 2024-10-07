@@ -1,4 +1,4 @@
-import { Answer } from "../entities/answer";
+import { Answer } from "../../enterpriste/entities/answer";
 
 
 export interface AnswerRepository{
