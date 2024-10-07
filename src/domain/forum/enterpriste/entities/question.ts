@@ -5,7 +5,7 @@ import { Optional } from "src/core/types/optional"
 import dayjs from "dayjs"
 
 interface QuestionProps {
-    authorId: string
+    authorId: UniqueEntityId
     bestAnswerId?: string
     title: string
     content: string
@@ -60,24 +60,27 @@ export class Question extends Entity<QuestionProps> {
         this.touch()
     }
 
-    set title(title:string){
+    set title(title: string) {
         this.props.title = title
         this.props.slug = Slug.createFromText(title)
         this.touch()
     }
 
-    set bestAnswerId(bestAnswerId:string|undefined){
+    set bestAnswerId(bestAnswerId: string | undefined) {
         this.props.bestAnswerId = bestAnswerId
         this.touch()
     }
 
     static create(
-        props: Optional<QuestionProps, 'createdAt'>, id?: UniqueEntityId) {
-        const question = new Question({
-            ...props,
-            slug:props.slug ?? Slug.createFromText(props.title),
-            createdAt: new Date()
-        }, id)
+        props: Optional<QuestionProps, 'createdAt' | 'slug'>,
+        id?: UniqueEntityId,
+    ) {
+        const question = new Question(
+            {
+                ...props,
+                slug: props.slug ?? Slug.createFromText(props.title),
+                createdAt: new Date()
+            }, id)
 
         return question
     }
