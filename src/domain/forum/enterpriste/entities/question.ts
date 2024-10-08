@@ -6,7 +6,7 @@ import dayjs from "dayjs"
 
 export interface QuestionProps {
     authorId: UniqueEntityId
-    bestAnswerId?: string
+    bestAnswerId?: UniqueEntityId
     title: string
     content: string
     slug: Slug
@@ -66,7 +66,7 @@ export class Question extends Entity<QuestionProps> {
         this.touch()
     }
 
-    set bestAnswerId(bestAnswerId: string | undefined) {
+    set bestAnswerId(bestAnswerId: UniqueEntityId | undefined) {
         this.props.bestAnswerId = bestAnswerId
         this.touch()
     }

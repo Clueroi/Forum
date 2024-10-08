@@ -2,6 +2,7 @@ import { Question } from "../../enterpriste/entities/question";
 
 
 export interface QuestionsRepository {
+    findManyRecent(page:number, query)
     findBySlug(slug: string): Promise<Question | null>
     findById(id:string):Promise<Question | null>
     create(question: Question): Promise<void>

@@ -3,7 +3,11 @@ import { Question } from "src/domain/forum/enterpriste/entities/question";
 
 export class InMemoryQuestionRepository implements QuestionsRepository {
     public items: Question[] = []
-
+    
+    findManyRecent(page: number, query: any) {
+        throw new Error("Method not implemented.");
+    }
+    
     async save(question: Question) {
         const itemIndex = this.items.findIndex((item) => item.id === question.id)
 
