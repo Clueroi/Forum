@@ -1,25 +1,25 @@
-import { InMemoryQuestionRepository } from 'test/repositories/in-memory-question-repository'
-import { EditQuestionUseCase } from './edit-question'
-import { makeQuestion } from 'test/factories/make-question'
+import { EditAnswerUseCase } from './edit-answer'
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
+import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
+import { makeAnswer } from 'test/factories/make-answer'
 
 
-let inMemoryRepository: InMemoryQuestionRepository
-let sut: EditQuestionUseCase
+let inMemoryRepository: InMemoryAnswersRepository
+let sut: EditAnswerUseCase
 
 describe('Edit a question', () => {
     beforeEach(() => {
-        inMemoryRepository = new InMemoryQuestionRepository()
-        sut = new EditQuestionUseCase(inMemoryRepository)
+        inMemoryRepository = new InMemoryAnswersRepository()
+        sut = new EditAnswerUseCase(inMemoryRepository)
     })
 
     it(' should be able to edit a question', async () => {
 
-        const newQuestion = makeQuestion(
+        const newQuestion = makeAnswer(
             {
                 authorId: new UniqueEntityId('author-1')
             },
-            new UniqueEntityId('question-1')
+            new UniqueEntityId('answer-1')
         )
 
         await inMemoryRepository.create(newQuestion)
@@ -27,12 +27,10 @@ describe('Edit a question', () => {
         await sut.execute({
             authorId: 'author-1',
             content: 'This is the content of the questions',
-            title: 'New title new title',
-            questionId: newQuestion.id.toString()
+            answerId: newQuestion.id.toString()
         })
 
         expect(inMemoryRepository.items[0]).toMatchObject({
-            title: 'New title new title',
             content: 'This is the content of the questions',
 
         })
@@ -40,7 +38,7 @@ describe('Edit a question', () => {
 
     it(' should not be able to edit a question from another user', async () => {
 
-        const newQuestion = makeQuestion({
+        const newQuestion = makeAnswer({
             authorId: new UniqueEntityId('author-1')
         }, new UniqueEntityId('question-1'))
 
@@ -48,10 +46,9 @@ describe('Edit a question', () => {
 
         expect(async () =>
             await sut.execute({
-                questionId: newQuestion.id.toString(),
                 authorId: 'author-2',
                 content: '',
-                title: ''
+                answerId: newQuestion.id.toString()
             })
         ).rejects.toBeInstanceOf(Error)
     })
