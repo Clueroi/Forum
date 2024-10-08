@@ -1,0 +1,47 @@
+import { InMemoryQuestionRepository } from 'test/repositories/in-memory-question-repository'
+import { makeQuestion } from 'test/factories/make-question'
+import { FetchRecentQuestionsUseCase } from './fetch-recent-questions'
+
+
+let inMemoryRepository: InMemoryQuestionRepository
+let sut: FetchRecentQuestionsUseCase
+
+describe('Fetch recent questions ', () => {
+    beforeEach(() => {
+        inMemoryRepository = new InMemoryQuestionRepository()
+        sut = new FetchRecentQuestionsUseCase(inMemoryRepository)
+    })
+
+    it(' should be able to fetch  recent questions', async () => {
+
+        await inMemoryRepository.create(makeQuestion({ createdAt: new Date(2022, 0, 20) }))
+        await inMemoryRepository.create(makeQuestion({ createdAt: new Date(2022, 0, 16) }))
+        await inMemoryRepository.create(makeQuestion({ createdAt: new Date(2022, 0, 19) }))
+
+        const { question } = await sut.execute({
+            page: 1
+        })
+
+        expect(question).toEqual([
+            expect.objectContaining({ createdAt: new Date(2022, 0, 20) }),
+            expect.objectContaining({ createdAt: new Date(2022, 0, 19) }),
+            expect.objectContaining({ createdAt: new Date(2022, 0, 16) }),
+        ])
+    })
+
+    it(' should be able to fetch paginated recent questions', async () => {
+
+        for (let i = 0; i < 22; i++) {
+            await inMemoryRepository.create(
+                makeQuestion()
+            )
+        }
+
+        const { question } = await sut.execute({
+            page: 2
+        })
+
+        expect(question).toHaveLength(2)
+    })
+
+})
