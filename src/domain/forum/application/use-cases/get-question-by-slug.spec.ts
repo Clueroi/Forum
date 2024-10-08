@@ -13,7 +13,7 @@ describe('Get question by slug', ()=>{
         sut = new DeleteQuestionUseCase(inMemoryRepository)
     })
 
-    it(' should be able to delete a question', async ()=>{
+    it(' should be able to get a question by slug', async ()=>{
 
         const newQuestion = makeQuestion({
             authorId: new UniqueEntityId('author-1')
@@ -29,19 +29,4 @@ describe('Get question by slug', ()=>{
         expect(inMemoryRepository.items).toHaveLength(0)
     })
 
-    it(' should not be able to delete a question from another user', async ()=>{
-
-        const newQuestion = makeQuestion({
-            authorId: new UniqueEntityId('author-1')
-        }, new UniqueEntityId('question-1'))
-
-        await inMemoryRepository.create(newQuestion)
-
-        expect(async ()=>
-            await sut.execute({
-                questionId: 'question-1',
-                authorId:'author-2'
-            })
-        ).rejects.toBeInstanceOf(Error)
-    })
 })
