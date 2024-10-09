@@ -1,8 +1,8 @@
 import { Entity } from "src/core/entities/entity"
 import { UniqueEntityId } from "src/core/entities/unique-entity-id"
-import { Optional } from "src/core/types/optional"
 
 export interface CommentProps {
+    questionId: UniqueEntityId
     authorId: UniqueEntityId
     content: string
     createdAt: Date
@@ -10,6 +10,10 @@ export interface CommentProps {
 }
 
 export abstract class Comment<Props extends CommentProps> extends Entity<Props> {
+
+    get questionId(){
+        return this.props.questionId
+    }
 
     get authorId() {
         return this.props.authorId
