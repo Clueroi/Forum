@@ -10,14 +10,14 @@ let inMemoryRepositoryAnswers: InMemoryAnswersRepository
 let inMemoryRepositoryQuestions: InMemoryQuestionRepository
 let sut: ChooseQuestionBestAnswerUseCase
 
-describe('Choose question best answer', ()=>{
+describe('Comment on question', ()=>{
     beforeEach(()=>{
         inMemoryRepositoryAnswers = new InMemoryAnswersRepository()
         inMemoryRepositoryQuestions = new InMemoryQuestionRepository()
         sut = new ChooseQuestionBestAnswerUseCase(inMemoryRepositoryAnswers, inMemoryRepositoryQuestions)
     })
 
-    it(' should be able to choose question best answer', async ()=>{
+    it(' should be able to comment on question', async ()=>{
 
         const question = makeQuestion()
 

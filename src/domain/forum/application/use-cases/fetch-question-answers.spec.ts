@@ -1,5 +1,5 @@
 import { InMemoryQuestionRepository } from 'test/repositories/in-memory-question-repository'
-import { InMemoryQuestionComment } from 'test/repositories/in-memory-question-comment'
+import { InMemoryQuestionComment } from 'test/repositories/in-memory-question-comment-repository'
 import { CommentOnQuestionOnQuesttUseCase } from './comment-on-question'
 import { makeQuestion } from 'test/factories/make-question'
 
