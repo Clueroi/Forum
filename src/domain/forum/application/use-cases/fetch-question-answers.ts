@@ -1,14 +1,16 @@
+import { Either, left, right } from "src/core/either"
 import { Answer } from "../../enterpriste/entities/answer"
 import { AnswerRepository } from "../repositories/answer-repository"
+import { ResourceNotFoundError } from "./Errors/resource-not-found-error"
 
 interface FetchQuestionAnswersUseCaseRequest {
     page: number
     questionId: string
 }
 
-interface FetchQuestionAnswersUseCaseResponse {
+type FetchQuestionAnswersUseCaseResponse = Either<ResourceNotFoundError, {
     answer: Answer[]
-}
+}>
 
 
 export class FetchQuestionAnswersUseCase {
@@ -21,11 +23,11 @@ export class FetchQuestionAnswersUseCase {
         const answer = await this.answerRepository.findManyByQuestionId(questionId, { page })
 
         if (!answer) {
-            throw new Error('Question not found')
+            return left(new ResourceNotFoundError())
         }
 
-        return {
+        return right({
             answer
-        }
+        })
     }
 }

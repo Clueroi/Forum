@@ -1,6 +1,7 @@
 import { UniqueEntityId } from "src/core/entities/unique-entity-id"
 import { Question } from "../../enterpriste/entities/question"
 import { QuestionsRepository } from "../repositories/question-repository"
+import { Either, right } from "src/core/either"
 
 
 interface CreateQuestionUseCaseRequest {
@@ -9,9 +10,9 @@ interface CreateQuestionUseCaseRequest {
     content: string
 }
 
-interface CreateQuestionUseCaseResponse {
+type CreateQuestionUseCaseResponse = Either<null, {
     question:Question
-}
+}>
 
 
 export class CreateQuestionUseCase {
@@ -32,8 +33,8 @@ export class CreateQuestionUseCase {
 
         await this.questionRepository.create(question)
 
-        return {
+        return right({
             question
-        }
+        })
     }
 }
