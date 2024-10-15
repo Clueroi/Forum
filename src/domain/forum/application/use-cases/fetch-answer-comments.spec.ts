@@ -13,7 +13,7 @@ describe('Fetch answer comments', () => {
         sut = new FetchAnswerCommentsUseCase(inMemoryanswerComment)
     })
 
-    it(' should be able to comment on answers', async () => {
+    it(' should be able to fetch answer comments', async () => {
         await inMemoryanswerComment.create(
             makeAnswerComment({
                 answerId: new UniqueEntityId('answer-1')
@@ -32,12 +32,12 @@ describe('Fetch answer comments', () => {
             })
         )
 
-        const { answerComments } = await sut.execute({
+        const result = await sut.execute({
             answerId: 'answer-1',
             page: 1
         })
 
-        expect(answerComments).toHaveLength(3)
+        expect(result.value?.answerComment).toHaveLength(3)
     })
 
     it(' should be able to fetch paginated recent answers', async () => {
@@ -49,13 +49,13 @@ describe('Fetch answer comments', () => {
                 }),
             )
         }
-
-        const { answerComments } = await sut.execute({
+        
+        const result = await sut.execute({
             answerId: 'answer-1',
             page: 2
         })
 
-        expect(answerComments).toHaveLength(1)
+        expect(result.value?.answerComment).toHaveLength(1)
     })
 
 

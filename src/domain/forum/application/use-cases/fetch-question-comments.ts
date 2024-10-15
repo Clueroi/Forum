@@ -8,7 +8,7 @@ interface FetchQuestionCommentsUseCaseRequest {
     questionId: string
 }
 
-type FetchQuestionCommentsUseCaseResponse = Either<ResourceNotFoundError, {
+type FetchQuestionCommentsUseCaseResponse = Either<null, {
     questionComments: QuestionComment[]
 }>
 
@@ -21,10 +21,6 @@ export class FetchQuestionCommentsUseCase {
         questionId
     }: FetchQuestionCommentsUseCaseRequest): Promise<FetchQuestionCommentsUseCaseResponse> {
         const questionComments = await this.questionCommentRepository.findManyByQuestionId(questionId, { page })
-
-        if (!questionComments) {
-            return left(new ResourceNotFoundError())
-        }
 
         return right({
             questionComments

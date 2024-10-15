@@ -8,7 +8,7 @@ interface FetchQuestionAnswersUseCaseRequest {
     questionId: string
 }
 
-type FetchQuestionAnswersUseCaseResponse = Either<ResourceNotFoundError, {
+type FetchQuestionAnswersUseCaseResponse = Either<null, {
     answer: Answer[]
 }>
 
@@ -21,10 +21,6 @@ export class FetchQuestionAnswersUseCase {
         questionId
     }: FetchQuestionAnswersUseCaseRequest): Promise<FetchQuestionAnswersUseCaseResponse> {
         const answer = await this.answerRepository.findManyByQuestionId(questionId, { page })
-
-        if (!answer) {
-            return left(new ResourceNotFoundError())
-        }
 
         return right({
             answer

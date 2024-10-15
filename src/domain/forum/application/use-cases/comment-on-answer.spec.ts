@@ -26,7 +26,8 @@ describe('Comment on answer', () => {
         await sut.execute({
             answerId:answer.id.toString(),
             authorId:answer.authorId.toString(),
-            content:'comentário teste'
+            content:'comentário teste',
+            questionId:'questionId'
         })
 
         expect(inMemoryAnswerComment.items[0].content).toEqual('comentário teste')

@@ -2,6 +2,7 @@ import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-r
 import { makeAnswer } from 'test/factories/make-answer'
 import { DeleteAnswerUseCase } from './delete-answer'
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
+import { NotAllowedError } from './Errors/not-allowed-error'
 
 
 let inMemoryRepository: InMemoryAnswersRepository
@@ -37,11 +38,12 @@ describe('Get answer by slug', ()=>{
 
         await inMemoryRepository.create(newAnswer)
 
-        expect(async ()=>
-            await sut.execute({
-                answerId: 'answer-1',
-                authorId:'author-2'
-            })
-        ).rejects.toBeInstanceOf(Error)
+        const result = await sut.execute({
+            answerId: 'answer-1',
+            authorId:'author-2'
+        })
+
+        expect(result.isLeft()).toBe(true)
+        expect(result.value).toBeInstanceOf(Error)
     })
 })
