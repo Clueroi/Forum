@@ -8,7 +8,7 @@ import { NotAllowedError } from './Errors/not-allowed-error'
 let inMemoryRepository: InMemoryAnswersRepository
 let sut: DeleteAnswerUseCase
 
-describe('Get answer by slug', ()=>{
+describe('Delete a question', ()=>{
     beforeEach(()=>{
         inMemoryRepository = new InMemoryAnswersRepository()
         sut = new DeleteAnswerUseCase(inMemoryRepository)
