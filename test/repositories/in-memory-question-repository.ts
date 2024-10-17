@@ -1,14 +1,22 @@
 import { PaginationParams } from "src/core/repositories/pagination-params";
 import { QuestionsRepository } from "src/domain/forum/application/repositories/question-repository";
 import { Question } from "src/domain/forum/enterpriste/entities/question";
+import { QuestionAttachmentRepository } from "src/domain/forum/application/repositories/questions-attachments-repository";
 
 export class InMemoryQuestionRepository implements QuestionsRepository {
+
+    constructor(
+        private questionAttachmentRepository: QuestionAttachmentRepository
+    ) {
+
+    }
+
     public items: Question[] = []
 
 
     async findManyRecent({ page }: PaginationParams) {
         const questions = this.items.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-        .slice((page - 1) * 20, page * 20)
+            .slice((page - 1) * 20, page * 20)
 
         return questions
     }
@@ -40,17 +48,16 @@ export class InMemoryQuestionRepository implements QuestionsRepository {
         return questions
     }
 
-
     async create(question: Question) {
         this.items.push(question)
     }
-
-
 
     async delete(question: Question) {
         const itemIndex = this.items.findIndex((item) => item.id === question.id)
 
         this.items.splice(itemIndex, 1)
+
+        this.questionAttachmentRepository.deleteManyByQuestionId(question.id.toString())
     }
 
 }
