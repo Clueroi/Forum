@@ -5,8 +5,9 @@ import { AnswerComment, AnswerCommentProps } from 'src/domain/forum/enterpriste/
 
 export function makeAnswerComment(override: Partial<AnswerCommentProps> = {}, id?: UniqueEntityId) {
     const answerComment = AnswerComment.create({
+        answerId: new UniqueEntityId(),
         authorId: new UniqueEntityId(),
-        answerId:new UniqueEntityId(),
+        questionId: new UniqueEntityId(),
         content: faker.lorem.text(),
         ...override
     },
