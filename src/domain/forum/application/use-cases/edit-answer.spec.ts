@@ -12,8 +12,8 @@ let sut: EditAnswerUseCase
 
 describe('Edit a question', () => {
     beforeEach(() => {
-        inMemoryRepository = new InMemoryAnswersRepository()
         inMemoryAnswerAttachments = new InMemoryAnswerAttachmentRepository()
+        inMemoryRepository = new InMemoryAnswersRepository(inMemoryAnswerAttachments)
         sut = new EditAnswerUseCase(inMemoryRepository, inMemoryAnswerAttachments)
     })
 
@@ -69,6 +69,7 @@ describe('Edit a question', () => {
             authorId: 'author-2',
             content: '',
             answerId: newQuestion.id.toString(),
+            attachmentsIds:[]
         })
 
         expect(result.isLeft()).toBe(true)
