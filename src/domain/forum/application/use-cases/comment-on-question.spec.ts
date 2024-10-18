@@ -5,17 +5,26 @@ import { InMemoryQuestionRepository } from 'test/repositories/in-memory-question
 import { ChooseQuestionBestAnswerUseCase } from './choose-question-best-answer'
 import { makeQuestion } from 'test/factories/make-question'
 import { NotAllowedError } from './Errors/not-allowed-error'
+import { InMemoryAnswerAttachmentRepository } from 'test/repositories/in-memory-answer-attachment-repository'
+import { InMemoryQuestionAttachmentRepository } from 'test/repositories/in-memory-question-attachments-repository'
 
 
 let inMemoryRepositoryAnswers: InMemoryAnswersRepository
-let inMemoryRepositoryQuestions: InMemoryQuestionRepository
+let inMemoryQuestionRepository: InMemoryQuestionRepository
+let inMemoryAnswerAttachment:InMemoryAnswerAttachmentRepository
+let inMemoryQuestionAttachmentRepository: InMemoryQuestionAttachmentRepository
 let sut: ChooseQuestionBestAnswerUseCase
 
 describe('Comment on question', ()=>{
     beforeEach(()=>{
-        inMemoryRepositoryAnswers = new InMemoryAnswersRepository()
-        inMemoryRepositoryQuestions = new InMemoryQuestionRepository()
-        sut = new ChooseQuestionBestAnswerUseCase(inMemoryRepositoryAnswers, inMemoryRepositoryQuestions)
+
+        inMemoryAnswerAttachment = new InMemoryAnswerAttachmentRepository()
+        inMemoryRepositoryAnswers = new InMemoryAnswersRepository(inMemoryAnswerAttachment)
+
+        inMemoryQuestionAttachmentRepository = new InMemoryQuestionAttachmentRepository()
+        inMemoryQuestionRepository = new InMemoryQuestionRepository(inMemoryQuestionAttachmentRepository)
+
+        sut = new ChooseQuestionBestAnswerUseCase(inMemoryRepositoryAnswers, inMemoryQuestionRepository)
     })
 
     it(' should be able to comment on question', async ()=>{
@@ -26,7 +35,7 @@ describe('Comment on question', ()=>{
             questionId:question.id
         })
 
-        await inMemoryRepositoryQuestions.create(question)
+        await inMemoryQuestionRepository.create(question)
         await inMemoryRepositoryAnswers.create(answer)
         
         await sut.execute({
@@ -34,7 +43,7 @@ describe('Comment on question', ()=>{
             authorId: question.authorId.toString()
         })
 
-        expect(inMemoryRepositoryQuestions.items[0].bestAnswerId).toEqual(answer.id)
+        expect(inMemoryQuestionRepository.items[0].bestAnswerId).toEqual(answer.id)
     })
 
     it(' should not be able to choose another user question best answer', async ()=>{
@@ -47,7 +56,7 @@ describe('Comment on question', ()=>{
             questionId:question.id
         })
 
-        await inMemoryRepositoryQuestions.create(question)
+        await inMemoryQuestionRepository.create(question)
         await inMemoryRepositoryAnswers.create(answer)
         
 

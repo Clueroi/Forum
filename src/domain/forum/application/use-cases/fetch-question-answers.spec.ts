@@ -2,31 +2,33 @@ import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 import { makeAnswer } from 'test/factories/make-answer'
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
 import { FetchQuestionAnswersUseCase } from './fetch-question-answers'
+import { InMemoryAnswerAttachmentRepository } from 'test/repositories/in-memory-answer-attachment-repository'
 
-
-let InMemoryAnswersRepo: InMemoryAnswersRepository
+let inMemoryAnswerAttachments: InMemoryAnswerAttachmentRepository
+let inMemoryRepository: InMemoryAnswersRepository
 let sut: FetchQuestionAnswersUseCase
 
 describe('Fetch answer comments', () => {
     beforeEach(() => {
-        InMemoryAnswersRepo = new InMemoryAnswersRepository()
-        sut = new FetchQuestionAnswersUseCase(InMemoryAnswersRepo)
+        inMemoryAnswerAttachments = new InMemoryAnswerAttachmentRepository()
+        inMemoryRepository = new InMemoryAnswersRepository(inMemoryAnswerAttachments)
+        sut = new FetchQuestionAnswersUseCase(inMemoryRepository)
     })
 
     it(' should be able to fetch answer comments', async () => {
-        await InMemoryAnswersRepo.create(
+        await inMemoryRepository.create(
             makeAnswer({
                 questionId: new UniqueEntityId('questions-id')
             })
         )
 
-        await InMemoryAnswersRepo.create(
+        await inMemoryRepository.create(
             makeAnswer({
                 questionId: new UniqueEntityId('questions-id')
             })
         )
 
-        await InMemoryAnswersRepo.create(
+        await inMemoryRepository.create(
             makeAnswer({
                 questionId: new UniqueEntityId('questions-id')
             })
@@ -43,7 +45,7 @@ describe('Fetch answer comments', () => {
     it(' should be able to fetch paginated question answers', async () => {
 
         for (let i = 1; i < 22; i++) {
-            await InMemoryAnswersRepo.create(
+            await inMemoryRepository.create(
                 makeAnswer({
                     questionId: new UniqueEntityId('question-id')
                 }),
