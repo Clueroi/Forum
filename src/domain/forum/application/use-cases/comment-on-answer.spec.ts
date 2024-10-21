@@ -4,7 +4,6 @@ import { AnswerOnCommentUseCase } from "./comment-on-answer"
 import { makeAnswer } from "test/factories/make-answer"
 import { InMemoryAnswerAttachmentRepository } from "test/repositories/in-memory-answer-attachment-repository"
 
-
 let inMemoryAnswerAttachments: InMemoryAnswerAttachmentRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let inMemoryAnswerComment: InMemoryAnswerComment
