@@ -2,8 +2,8 @@ import { DeleteAnswerCommentUseCase } from './delete-answer-comment'
 import { InMemoryAnswerComment } from 'test/repositories/in-memory-answer-comment-repository'
 import { makeAnswerComment } from 'test/factories/make-answer-comment'
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
-import { ResourceNotFoundError } from './Errors/resource-not-found-error'
-import { NotAllowedError } from './Errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/core/core/errors/Errors/resource-not-found-error'
+import { NotAllowedError } from '@/core/core/errors/Errors/not-allowed-error'
 
 
 let InMemoryAnswerCommentRepository: InMemoryAnswerComment

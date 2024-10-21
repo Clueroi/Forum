@@ -1,7 +1,6 @@
 import { Either, left, right } from "src/core/either"
 import { AnswerComment } from "../../enterpriste/entities/answer-comment"
 import { AnswerCommentRepository } from "../repositories/answer-comment-repository"
-import { ResourceNotFoundError } from "./Errors/resource-not-found-error"
 
 interface FetchAnswerCommentUseCaseRequest {
     page: number
