@@ -4,6 +4,7 @@ import { Optional } from "src/core/types/optional"
 import dayjs from "dayjs"
 import { AggregateRoot } from "src/core/entities/aggregate-root"
 import { QuestionAttachmentList } from "./question-attachment-list"
+import { QuestionBestAnswerEvent } from "../events/question-best-answer-event"
 
 export interface QuestionProps {
     authorId: UniqueEntityId
@@ -25,8 +26,8 @@ export class Question extends AggregateRoot<QuestionProps> {
         return this.props.bestAnswerId
     }
 
-    get attachments(){
-        return this.props.attachments   
+    get attachments() {
+        return this.props.attachments
     }
 
     get title() {
@@ -73,7 +74,17 @@ export class Question extends AggregateRoot<QuestionProps> {
     }
 
     set bestAnswerId(bestAnswerId: UniqueEntityId | undefined) {
+
+        if (bestAnswerId === undefined) {
+            return
+        }
+
+        if (this.props.bestAnswerId === undefined || !this.props.bestAnswerId.equals(bestAnswerId)) {
+            this.addDomainEvent(new QuestionBestAnswerEvent(this, bestAnswerId))
+        }
+
         this.props.bestAnswerId = bestAnswerId
+
         this.touch()
     }
 
@@ -91,7 +102,7 @@ export class Question extends AggregateRoot<QuestionProps> {
                 ...props,
                 slug: props.slug ?? Slug.createFromText(props.title),
                 createdAt: props.createdAt ?? new Date(),
-                attachments: props.attachments ?? new QuestionAttachmentList(), 
+                attachments: props.attachments ?? new QuestionAttachmentList(),
             },
             id
         )
